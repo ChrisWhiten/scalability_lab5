@@ -8,6 +8,7 @@ async function consumeTasks() {
     const channel = await conn.createChannel();
     await channel.assertQueue('bookmarks');
 
+    channel.prefetch(3);
     channel.consume('bookmarks', async (bookmark) => {
       await checkBookmark(JSON.parse(bookmark.content.toString()));
       channel.ack(bookmark);
